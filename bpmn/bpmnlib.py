@@ -168,7 +168,7 @@ class Diagram:
         o = [f'<rect x="{x-w/2:.1f}" y="{y-h/2:.1f}" width="{w}" height="{h}" rx="10" fill="#fff" stroke="{INK}" stroke-width="1.8"/>']
         lines = wrap(n["name"], int((w - 14) / 6.2))
         lh = 13
-        ty = y - (len(lines) - 1) * lh / 2 + 4
+        ty = y - (len(lines) - 1) * lh / 2 + 4 + (5 if n["kind"] != "task" else 0)
         o.append(self._text(x, ty, lines, 11, lh=lh))
         ix, iy = x - w / 2 + 8, y - h / 2 + 7
         k = n["kind"]

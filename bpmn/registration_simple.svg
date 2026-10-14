@@ -120,16 +120,16 @@
 <circle cx="125" cy="95" r="18.0" fill="#fff" stroke="#222" stroke-width="1.6"/>
 <text x="125.0" y="126.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="125.0" dy="0.0">Открыта страница</tspan><tspan x="125.0" dy="12.0">регистрации</tspan><tspan x="125.0" dy="12.0">(десктоп)</tspan></text>
 <rect x="203.0" y="57.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="265.0" y="86.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="265.0" dy="0.0">Перейти на</tspan><tspan x="265.0" dy="13.0">страницу</tspan><tspan x="265.0" dy="13.0">регистрации</tspan></text>
+<text x="265.0" y="91.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="265.0" dy="0.0">Перейти на</tspan><tspan x="265.0" dy="13.0">страницу</tspan><tspan x="265.0" dy="13.0">регистрации</tspan></text>
 <rect x="211.0" y="66.0" width="14" height="10" fill="#222" stroke="#222" stroke-width="1.1"/><polyline points="211.0,66.0 218.0,72.0 225.0,66.0" fill="none" stroke="#fff" stroke-width="1.1"/>
 <rect x="623.0" y="57.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="685.0" y="86.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="685.0" dy="0.0">Ввод данных</tspan><tspan x="685.0" dy="13.0">пользователем (с</tspan><tspan x="685.0" dy="13.0">Tab-навигацией)</tspan></text>
+<text x="685.0" y="91.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="685.0" dy="0.0">Ввод данных</tspan><tspan x="685.0" dy="13.0">пользователем (с</tspan><tspan x="685.0" dy="13.0">Tab-навигацией)</tspan></text>
 <circle cx="636.0" cy="67.0" r="3" fill="none" stroke="#222" stroke-width="1.2"/><path d="M631.0,77.0 q5,-9 10,0 z" fill="none" stroke="#222" stroke-width="1.2"/>
 <rect x="1043.0" y="57.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1105.0" y="92.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1105.0" dy="0.0">Нажать</tspan><tspan x="1105.0" dy="13.0">«Отправить»</tspan></text>
+<text x="1105.0" y="97.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1105.0" dy="0.0">Нажать</tspan><tspan x="1105.0" dy="13.0">«Отправить»</tspan></text>
 <circle cx="1056.0" cy="67.0" r="3" fill="none" stroke="#222" stroke-width="1.2"/><path d="M1051.0,77.0 q5,-9 10,0 z" fill="none" stroke="#222" stroke-width="1.2"/>
 <rect x="2163.0" y="57.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="2225.0" y="92.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2225.0" dy="0.0">Ожидание ввода</tspan><tspan x="2225.0" dy="13.0">кода (код из SMS)</tspan></text>
+<text x="2225.0" y="97.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2225.0" dy="0.0">Ожидание ввода</tspan><tspan x="2225.0" dy="13.0">кода (код из SMS)</tspan></text>
 <circle cx="2176.0" cy="67.0" r="3" fill="none" stroke="#222" stroke-width="1.2"/><path d="M2171.0,77.0 q5,-9 10,0 z" fill="none" stroke="#222" stroke-width="1.2"/>
 <circle cx="2195" cy="133.0" r="15.0" fill="#fff" stroke="#222" stroke-width="1.6"/><circle cx="2195" cy="133.0" r="11.5" fill="none" stroke="#222" stroke-width="1.6"/>
 <circle cx="2195" cy="133.0" r="7" fill="#fff" stroke="#222" stroke-width="1.3"/><path d="M2195,128.0 V133.0 L2199,135.0" fill="none" stroke="#222" stroke-width="1.3"/>
@@ -147,7 +147,7 @@
 <line x1="2200.0" y1="130.1" x2="2201.1" y2="129.5" stroke="#222" stroke-width="0.8"/>
 <text x="2168.0" y="139.0" font-size="10.5" text-anchor="end" font-weight="normal" fill="#222"><tspan x="2168.0" dy="0.0">Таймаут</tspan><tspan x="2168.0" dy="12.0">кода: срок</tspan><tspan x="2168.0" dy="12.0">действия</tspan><tspan x="2168.0" dy="12.0">истёк</tspan></text>
 <rect x="1883.0" y="152.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1945.0" y="187.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1945.0" dy="0.0">Нажать «Запросить</tspan><tspan x="1945.0" dy="13.0">новый код»</tspan></text>
+<text x="1945.0" y="192.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1945.0" dy="0.0">Нажать «Запросить</tspan><tspan x="1945.0" dy="13.0">новый код»</tspan></text>
 <circle cx="1896.0" cy="162.0" r="3" fill="none" stroke="#222" stroke-width="1.2"/><path d="M1891.0,172.0 q5,-9 10,0 z" fill="none" stroke="#222" stroke-width="1.2"/>
 <circle cx="2365" cy="95" r="18.0" fill="#fff" stroke="#222" stroke-width="4.2"/>
 <text x="2365.0" y="126.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2365.0" dy="0.0">Процесс</tspan><tspan x="2365.0" dy="12.0">регистрации</tspan><tspan x="2365.0" dy="12.0">завершён</tspan></text>
@@ -197,7 +197,7 @@
 <path d="M435.0,364.0 H451.0 L459.0,372.0 V396.0 H435.0 Z" fill="#fff" stroke="#222" stroke-width="1.4"/><path d="M451.0,364.0 V372.0 H459.0" fill="none" stroke="#222" stroke-width="1.2"/>
 <text x="465.0" y="378.2" font-size="10" text-anchor="start" font-weight="normal" fill="#222"><tspan x="465.0" dy="0.0">Документ</tspan><tspan x="465.0" dy="11.5">согласия</tspan></text>
 <rect x="1463.0" y="787.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1525.0" y="816.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1525.0" dy="0.0">Проверить</tspan><tspan x="1525.0" dy="13.0">уникальность</tspan><tspan x="1525.0" dy="13.0">email на бэкенде</tspan></text>
+<text x="1525.0" y="821.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1525.0" dy="0.0">Проверить</tspan><tspan x="1525.0" dy="13.0">уникальность</tspan><tspan x="1525.0" dy="13.0">email на бэкенде</tspan></text>
 <circle cx="1477.0" cy="800.0" r="3.6" fill="none" stroke="#222" stroke-width="1.3"/>
 <line x1="1481.6" y1="800.0" x2="1484.0" y2="800.0" stroke="#222" stroke-width="1.8"/>
 <line x1="1480.3" y1="803.3" x2="1481.9" y2="804.9" stroke="#222" stroke-width="1.8"/>
@@ -213,7 +213,7 @@
 <path d="M1797,817 L1813,833 M1813,817 L1797,833" stroke="#222" stroke-width="3"/>
 <text x="1805.0" y="862.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222"><tspan x="1805.0" dy="0.0">Email</tspan><tspan x="1805.0" dy="12.5">уникален?</tspan></text>
 <rect x="1883.0" y="787.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1945.0" y="822.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1945.0" dy="0.0">Сгенерировать код</tspan><tspan x="1945.0" dy="13.0">подтверждения</tspan></text>
+<text x="1945.0" y="827.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1945.0" dy="0.0">Сгенерировать код</tspan><tspan x="1945.0" dy="13.0">подтверждения</tspan></text>
 <circle cx="1897.0" cy="800.0" r="3.6" fill="none" stroke="#222" stroke-width="1.3"/>
 <line x1="1901.6" y1="800.0" x2="1904.0" y2="800.0" stroke="#222" stroke-width="1.8"/>
 <line x1="1900.3" y1="803.3" x2="1901.9" y2="804.9" stroke="#222" stroke-width="1.8"/>
@@ -226,13 +226,13 @@
 <path d="M1933.0,887.0 H1949.0 L1957.0,895.0 V919.0 H1933.0 Z" fill="#fff" stroke="#222" stroke-width="1.4"/><path d="M1949.0,887.0 V895.0 H1957.0" fill="none" stroke="#222" stroke-width="1.2"/>
 <text x="1945.0" y="931.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1945.0" dy="0.0">Код</tspan><tspan x="1945.0" dy="11.5">подтверждения</tspan></text>
 <rect x="2023.0" y="787.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="2085.0" y="822.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2085.0" dy="0.0">Отправить SMS</tspan><tspan x="2085.0" dy="13.0">через шлюз</tspan></text>
+<text x="2085.0" y="827.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2085.0" dy="0.0">Отправить SMS</tspan><tspan x="2085.0" dy="13.0">через шлюз</tspan></text>
 <rect x="2031.0" y="796.0" width="14" height="10" fill="#222" stroke="#222" stroke-width="1.1"/><polyline points="2031.0,796.0 2038.0,802.0 2045.0,796.0" fill="none" stroke="#fff" stroke-width="1.1"/>
 <circle cx="2085" cy="787.0" r="15.0" fill="#fff" stroke="#222" stroke-width="1.6"/><circle cx="2085" cy="787.0" r="11.5" fill="none" stroke="#222" stroke-width="1.6"/>
 <polygon points="2079,793.0 2083,784.0 2086,789.0 2091,780.0 2087,790.0 2084,785.0" fill="#fff" stroke="#222" stroke-width="1.1" stroke-linejoin="round"/>
 <text x="2106.0" y="741.0" font-size="10.5" text-anchor="start" font-weight="normal" fill="#222"><tspan x="2106.0" dy="0.0">SMS-шлюз</tspan><tspan x="2106.0" dy="12.0">недоступен</tspan></text>
 <rect x="2163.0" y="787.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="2225.0" y="822.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2225.0" dy="0.0">Проверить код</tspan><tspan x="2225.0" dy="13.0">подтверждения</tspan></text>
+<text x="2225.0" y="827.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2225.0" dy="0.0">Проверить код</tspan><tspan x="2225.0" dy="13.0">подтверждения</tspan></text>
 <circle cx="2177.0" cy="800.0" r="3.6" fill="none" stroke="#222" stroke-width="1.3"/>
 <line x1="2181.6" y1="800.0" x2="2184.0" y2="800.0" stroke="#222" stroke-width="1.8"/>
 <line x1="2180.3" y1="803.3" x2="2181.9" y2="804.9" stroke="#222" stroke-width="1.8"/>
@@ -249,7 +249,7 @@
 <path d="M2497,817 L2513,833 M2513,817 L2497,833" stroke="#222" stroke-width="3"/>
 <text x="2505.0" y="862.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222"><tspan x="2505.0" dy="0.0">Лимит попыток</tspan><tspan x="2505.0" dy="12.5">исчерпан?</tspan></text>
 <rect x="2303.0" y="992.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="2365.0" y="1027.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2365.0" dy="0.0">Сохранить</tspan><tspan x="2365.0" dy="13.0">пользователя в БД</tspan></text>
+<text x="2365.0" y="1032.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2365.0" dy="0.0">Сохранить</tspan><tspan x="2365.0" dy="13.0">пользователя в БД</tspan></text>
 <circle cx="2317.0" cy="1005.0" r="3.6" fill="none" stroke="#222" stroke-width="1.3"/>
 <line x1="2321.6" y1="1005.0" x2="2324.0" y2="1005.0" stroke="#222" stroke-width="1.8"/>
 <line x1="2320.3" y1="1008.3" x2="2321.9" y2="1009.9" stroke="#222" stroke-width="1.8"/>
@@ -267,7 +267,7 @@
 <rect x="2078.0" y="1205.0" width="14" height="10" fill="#fff" stroke="#222" stroke-width="1.1"/><polyline points="2078.0,1205.0 2085.0,1211.0 2092.0,1205.0" fill="none" stroke="#222" stroke-width="1.1"/>
 <text x="2085.0" y="1241.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2085.0" dy="0.0">Запрос на</tspan><tspan x="2085.0" dy="12.0">отправку SMS</tspan></text>
 <rect x="2163.0" y="1172.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="2225.0" y="1201.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2225.0" dy="0.0">Доставить SMS на</tspan><tspan x="2225.0" dy="13.0">номер</tspan><tspan x="2225.0" dy="13.0">пользователя</tspan></text>
+<text x="2225.0" y="1206.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="2225.0" dy="0.0">Доставить SMS на</tspan><tspan x="2225.0" dy="13.0">номер</tspan><tspan x="2225.0" dy="13.0">пользователя</tspan></text>
 <rect x="2171.0" y="1181.0" width="14" height="10" fill="#222" stroke="#222" stroke-width="1.1"/><polyline points="2171.0,1181.0 2178.0,1187.0 2185.0,1181.0" fill="none" stroke="#fff" stroke-width="1.1"/>
 <circle cx="2425" cy="1210" r="18.0" fill="#fff" stroke="#222" stroke-width="4.2"/>
 <rect x="2418.0" y="1205.0" width="14" height="10" fill="#222" stroke="#222" stroke-width="1.1"/><polyline points="2418.0,1205.0 2425.0,1211.0 2432.0,1205.0" fill="none" stroke="#fff" stroke-width="1.1"/>
