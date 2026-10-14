@@ -42,12 +42,24 @@ def simple_validation():
     for f in d.flows:
         if f["id"] == "vm1":
             f["label"] = None
+    # explicit merge before "update button" (two ways lead there)
+    X = lambda c: 130 + 150 * c  # noqa: E731
+    d.gw("Mb", X(5) + 60, 255, "", "xor", pool="P_ui")
+    d.flows = [f for f in d.flows if f["id"] not in ("v06", "v10", "v11")]
+    d.flow("v06", "seq", "G_req", "Mb", "R", "L", label="да", lx=X(4) + 30, ly=255 - 6, anchor="start", ln=6)
+    d.flow("v10", "seq", "T_red", "Mb", "R", "B")
+    d.flow("v12", "seq", "Mb", "T_btn", "R", "L")
+    d.flow("v11", "seq", "T_btn", "E1", "R", "L")
     return d
 
 
 def simple_consents():
     d = build.consent_diagram()
     d.name = "consents_simple"
+    X = lambda c: 130 + 150 * c  # noqa: E731
+    # the "send consents" task needs a proper end
+    d.ev("E_sent", X(6) + 100, 175, "Согласия отправлены", "end", lab="B", lw=14, pool="P_ui")
+    d.flow("c09", "seq", "T_pass", "E_sent", "R", "L")
     return d
 
 
