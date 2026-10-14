@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_validation_simple" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmnlib" exporterVersion="1.0">
+  <bpmn:collaboration id="Collab_validation_simple">
+    <bpmn:participant id="P_user" name="Пользователь (браузер)"/>
+    <bpmn:participant id="P_ui" name="UI/UX (Frontend)" processRef="Proc_P_ui"/>
+    <bpmn:messageFlow id="vm1" sourceRef="P_user" targetRef="S1"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_P_ui" isExecutable="false">
+    <bpmn:startEvent id="S1" name="Поле X потеряло фокус"><bpmn:outgoing>v01</bpmn:outgoing><bpmn:messageEventDefinition/></bpmn:startEvent>
+    <bpmn:task id="T1" name="Потеря фокуса на поле X"><bpmn:incoming>v01</bpmn:incoming><bpmn:outgoing>v02</bpmn:outgoing></bpmn:task>
+    <bpmn:exclusiveGateway id="G_pat" name="Соответствует шаблону?"><bpmn:incoming>v02</bpmn:incoming><bpmn:outgoing>v03</bpmn:outgoing><bpmn:outgoing>v04</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:task id="T_req" name="Проверить обязательность"><bpmn:incoming>v03</bpmn:incoming><bpmn:outgoing>v05</bpmn:outgoing></bpmn:task>
+    <bpmn:exclusiveGateway id="G_req" name="Обязательное поле заполнено?"><bpmn:incoming>v05</bpmn:incoming><bpmn:outgoing>v06</bpmn:outgoing><bpmn:outgoing>v07</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Mg"><bpmn:incoming>v04</bpmn:incoming><bpmn:incoming>v07</bpmn:incoming><bpmn:outgoing>v08</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:task id="T_err" name="Показать ошибку под полем"><bpmn:incoming>v08</bpmn:incoming><bpmn:outgoing>v09</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_red" name="Подсветить поле красным"><bpmn:incoming>v09</bpmn:incoming><bpmn:outgoing>v10</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_btn" name="Обновить состояние кнопки «Отправить»"><bpmn:incoming>v06</bpmn:incoming><bpmn:incoming>v10</bpmn:incoming><bpmn:outgoing>v11</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="E1" name="Состояние кнопки обновлено"><bpmn:incoming>v11</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="v01" sourceRef="S1" targetRef="T1"/>
+    <bpmn:sequenceFlow id="v02" sourceRef="T1" targetRef="G_pat"/>
+    <bpmn:sequenceFlow id="v03" sourceRef="G_pat" targetRef="T_req" name="да"/>
+    <bpmn:sequenceFlow id="v04" sourceRef="G_pat" targetRef="Mg" name="нет"/>
+    <bpmn:sequenceFlow id="v05" sourceRef="T_req" targetRef="G_req"/>
+    <bpmn:sequenceFlow id="v06" sourceRef="G_req" targetRef="T_btn" name="да"/>
+    <bpmn:sequenceFlow id="v07" sourceRef="G_req" targetRef="Mg" name="нет"/>
+    <bpmn:sequenceFlow id="v08" sourceRef="Mg" targetRef="T_err"/>
+    <bpmn:sequenceFlow id="v09" sourceRef="T_err" targetRef="T_red"/>
+    <bpmn:sequenceFlow id="v10" sourceRef="T_red" targetRef="T_btn"/>
+    <bpmn:sequenceFlow id="v11" sourceRef="T_btn" targetRef="E1"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_validation_simple">
+    <bpmndi:BPMNPlane id="Plane_validation_simple" bpmnElement="Collab_validation_simple">
+      <bpmndi:BPMNShape id="P_user_di" bpmnElement="P_user" isHorizontal="true"><dc:Bounds x="15" y="20" width="1370" height="60"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_ui_di" bpmnElement="P_ui" isHorizontal="true"><dc:Bounds x="15" y="130" width="1370" height="400"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S1_di" bpmnElement="S1"><dc:Bounds x="112.0" y="237.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T1_di" bpmnElement="T1"><dc:Bounds x="218.0" y="217.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G_pat_di" bpmnElement="G_pat" isMarkerVisible="true"><dc:Bounds x="407.0" y="232.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_req_di" bpmnElement="T_req"><dc:Bounds x="518.0" y="217.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G_req_di" bpmnElement="G_req" isMarkerVisible="true"><dc:Bounds x="707.0" y="232.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Mg_di" bpmnElement="Mg" isMarkerVisible="true"><dc:Bounds x="557.0" y="392.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_err_di" bpmnElement="T_err"><dc:Bounds x="668.0" y="377.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_red_di" bpmnElement="T_red"><dc:Bounds x="818.0" y="377.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_btn_di" bpmnElement="T_btn"><dc:Bounds x="968.0" y="217.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E1_di" bpmnElement="E1"><dc:Bounds x="1162.0" y="237.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="v01_di" bpmnElement="v01">
+        <di:waypoint x="148.0" y="255.0"/>
+        <di:waypoint x="218.0" y="255.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v02_di" bpmnElement="v02">
+        <di:waypoint x="342.0" y="255.0"/>
+        <di:waypoint x="407.0" y="255.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v03_di" bpmnElement="v03">
+        <di:waypoint x="453.0" y="255.0"/>
+        <di:waypoint x="518.0" y="255.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v04_di" bpmnElement="v04">
+        <di:waypoint x="430.0" y="278.0"/>
+        <di:waypoint x="430.0" y="415.0"/>
+        <di:waypoint x="557.0" y="415.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v05_di" bpmnElement="v05">
+        <di:waypoint x="642.0" y="255.0"/>
+        <di:waypoint x="707.0" y="255.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v06_di" bpmnElement="v06">
+        <di:waypoint x="753.0" y="255.0"/>
+        <di:waypoint x="968.0" y="255.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v07_di" bpmnElement="v07">
+        <di:waypoint x="730.0" y="278.0"/>
+        <di:waypoint x="730.0" y="335.0"/>
+        <di:waypoint x="580.0" y="335.0"/>
+        <di:waypoint x="580.0" y="392.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v08_di" bpmnElement="v08">
+        <di:waypoint x="603.0" y="415.0"/>
+        <di:waypoint x="668.0" y="415.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v09_di" bpmnElement="v09">
+        <di:waypoint x="792.0" y="415.0"/>
+        <di:waypoint x="818.0" y="415.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v10_di" bpmnElement="v10">
+        <di:waypoint x="942.0" y="415.0"/>
+        <di:waypoint x="1030.0" y="415.0"/>
+        <di:waypoint x="1030.0" y="293.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="v11_di" bpmnElement="v11">
+        <di:waypoint x="1092.0" y="255.0"/>
+        <di:waypoint x="1162.0" y="255.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="vm1_di" bpmnElement="vm1">
+        <di:waypoint x="130.0" y="80.0"/>
+        <di:waypoint x="130.0" y="237.0"/>
+        <di:waypoint x="130.0" y="237.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
