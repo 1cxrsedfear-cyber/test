@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" font-family="DejaVu Sans, Arial, sans-serif">
+<defs>
+<marker id="seq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker>
+<marker id="msgEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fff" stroke="#222" stroke-width="1.2"/></marker>
+<marker id="msgStart" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8"><circle cx="5" cy="5" r="3.4" fill="#fff" stroke="#222" stroke-width="1.2"/></marker>
+<marker id="assoc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="#555" stroke-width="1.2"/></marker>
+</defs>
+<rect width="1400" height="760" fill="#ffffff"/>
+<rect x="15" y="20" width="1370" height="60" fill="#f3f3f3" stroke="#222" stroke-width="1.6"/>
+<text x="35.0" y="55.0" font-size="13" text-anchor="start" font-weight="bold" fill="#222"><tspan x="35.0" dy="0.0">Пользователь (браузер)</tspan></text>
+<rect x="15" y="130" width="1370" height="610" fill="#fff" stroke="#222" stroke-width="1.6"/>
+<line x1="45" y1="130" x2="45" y2="740" stroke="#222" stroke-width="1.6"/>
+<g transform="rotate(-90 30 435.0)"><text x="30.0" y="439.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#222"><tspan x="30.0" dy="0.0">UI/UX (Frontend)</tspan></text></g>
+<path d="M148.0,255.0 L218.0,255.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M342.0,255.0 L407.0,255.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M453.0,255.0 L518.0,255.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<rect x="458.0" y="239.5" width="16.2" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="460.0" y="248.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="460.0" dy="0.0">да</tspan></text>
+<path d="M430.0,278.0 L430.0,415.0 L557.0,415.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<rect x="436.0" y="293.5" width="21.3" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="438.0" y="302.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="438.0" dy="0.0">нет</tspan></text>
+<path d="M642.0,255.0 L707.0,255.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M753.0,255.0 L968.0,255.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<rect x="758.0" y="239.5" width="16.2" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="760.0" y="248.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="760.0" dy="0.0">да</tspan></text>
+<path d="M730.0,278.0 L730.0,335.0 L580.0,335.0 L580.0,392.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<rect x="736.0" y="293.5" width="21.3" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="738.0" y="302.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="738.0" dy="0.0">нет</tspan></text>
+<path d="M603.0,415.0 L668.0,415.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M792.0,415.0 L818.0,415.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M942.0,415.0 L1030.0,415.0 L1030.0,293.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M1092.0,255.0 L1162.0,255.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M148.0,545.0 L218.0,545.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M342.0,545.0 L407.0,545.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M453.0,545.0 L518.0,545.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<rect x="458.0" y="529.5" width="16.2" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="460.0" y="538.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="460.0" dy="0.0">да</tspan></text>
+<path d="M642.0,545.0 L712.0,545.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M430.0,568.0 L430.0,665.0 L518.0,665.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<rect x="436.0" y="583.5" width="21.3" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="438.0" y="592.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="438.0" dy="0.0">нет</tspan></text>
+<path d="M642.0,665.0 L732.0,665.0" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#seq)"/>
+<path d="M130.0,80.0 L130.0,237.0 L130.0,237.0" fill="none" stroke="#222" stroke-width="1.4" stroke-dasharray="7 4" marker-start="url(#msgStart)" marker-end="url(#msgEnd)"/>
+<rect x="134.0" y="145.0" width="82.5" height="24.0" fill="#fff" fill-opacity="0.85"/>
+<text x="136.0" y="154.0" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="136.0" dy="0.0">Уход с поля (on</tspan><tspan x="136.0" dy="10.5">blur)</tspan></text>
+<path d="M60.0,80.0 L60.0,545.0 L112.0,545.0" fill="none" stroke="#222" stroke-width="1.4" stroke-dasharray="7 4" marker-start="url(#msgStart)" marker-end="url(#msgEnd)"/>
+<rect x="62.0" y="330.5" width="67.2" height="13.5" fill="#fff" fill-opacity="0.85"/>
+<text x="64.0" y="339.5" font-size="9" text-anchor="start" font-weight="normal" fill="#444" font-style="italic"><tspan x="64.0" dy="0.0">Клик / Enter</tspan></text>
+<circle cx="130" cy="255" r="18.0" fill="#fff" stroke="#222" stroke-width="1.6"/>
+<rect x="123.0" y="250.0" width="14" height="10" fill="#fff" stroke="#222" stroke-width="1.1"/><polyline points="123.0,250.0 130.0,256.0 137.0,250.0" fill="none" stroke="#222" stroke-width="1.1"/>
+<text x="130.0" y="286.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="130.0" dy="0.0">Поле X</tspan><tspan x="130.0" dy="12.0">потеряло фокус</tspan></text>
+<rect x="218.0" y="217.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="280.0" y="252.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="280.0" dy="0.0">Потеря фокуса на</tspan><tspan x="280.0" dy="13.0">поле X</tspan></text>
+<polygon points="430,232 453,255 430,278 407,255" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M422,247 L438,263 M438,247 L422,263" stroke="#222" stroke-width="3"/>
+<text x="430.0" y="213.5" font-size="11" text-anchor="middle" font-weight="bold" fill="#222"><tspan x="430.0" dy="0.0">Соответствует</tspan><tspan x="430.0" dy="12.5">шаблону?</tspan></text>
+<rect x="518.0" y="217.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="580.0" y="252.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="580.0" dy="0.0">Проверить</tspan><tspan x="580.0" dy="13.0">обязательность</tspan></text>
+<polygon points="730,232 753,255 730,278 707,255" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M722,247 L738,263 M738,247 L722,263" stroke="#222" stroke-width="3"/>
+<text x="730.0" y="201.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222"><tspan x="730.0" dy="0.0">Обязательное</tspan><tspan x="730.0" dy="12.5">поле</tspan><tspan x="730.0" dy="12.5">заполнено?</tspan></text>
+<polygon points="580,392 603,415 580,438 557,415" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M572,407 L588,423 M588,407 L572,423" stroke="#222" stroke-width="3"/>
+<rect x="668.0" y="377.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="730.0" y="412.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="730.0" dy="0.0">Показать ошибку</tspan><tspan x="730.0" dy="13.0">под полем</tspan></text>
+<rect x="818.0" y="377.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="880.0" y="412.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="880.0" dy="0.0">Подсветить поле</tspan><tspan x="880.0" dy="13.0">красным</tspan></text>
+<rect x="968.0" y="217.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="1030.0" y="246.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1030.0" dy="0.0">Обновить</tspan><tspan x="1030.0" dy="13.0">состояние кнопки</tspan><tspan x="1030.0" dy="13.0">«Отправить»</tspan></text>
+<circle cx="1180" cy="255" r="18.0" fill="#fff" stroke="#222" stroke-width="4.2"/>
+<text x="1180.0" y="286.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="1180.0" dy="0.0">Состояние</tspan><tspan x="1180.0" dy="12.0">кнопки</tspan><tspan x="1180.0" dy="12.0">обновлено</tspan></text>
+<circle cx="130" cy="545" r="18.0" fill="#fff" stroke="#222" stroke-width="1.6"/>
+<rect x="123.0" y="540.0" width="14" height="10" fill="#fff" stroke="#222" stroke-width="1.1"/><polyline points="123.0,540.0 130.0,546.0 137.0,540.0" fill="none" stroke="#222" stroke-width="1.1"/>
+<text x="130.0" y="576.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="130.0" dy="0.0">Нажата</tspan><tspan x="130.0" dy="12.0">«Отправить» /</tspan><tspan x="130.0" dy="12.0">Enter</tspan></text>
+<rect x="218.0" y="507.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="280.0" y="542.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="280.0" dy="0.0">Проверить все</tspan><tspan x="280.0" dy="13.0">поля формы</tspan></text>
+<polygon points="430,522 453,545 430,568 407,545" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M422,537 L438,553 M438,537 L422,553" stroke="#222" stroke-width="3"/>
+<text x="430.0" y="503.5" font-size="11" text-anchor="middle" font-weight="bold" fill="#222"><tspan x="430.0" dy="0.0">Все поля</tspan><tspan x="430.0" dy="12.5">валидны?</tspan></text>
+<rect x="518.0" y="507.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="580.0" y="542.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="580.0" dy="0.0">Передать данные</tspan><tspan x="580.0" dy="13.0">на бэкенд</tspan></text>
+<rect x="526.0" y="516.0" width="14" height="10" fill="#222" stroke="#222" stroke-width="1.1"/><polyline points="526.0,516.0 533.0,522.0 540.0,516.0" fill="none" stroke="#fff" stroke-width="1.1"/>
+<circle cx="730" cy="545" r="18.0" fill="#fff" stroke="#222" stroke-width="4.2"/>
+<text x="730.0" y="576.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="730.0" dy="0.0">Отправка</tspan><tspan x="730.0" dy="12.0">выполнена</tspan></text>
+<rect x="518.0" y="627.0" width="124" height="76" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="580.0" y="649.5" font-size="11" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="580.0" dy="0.0">Прервать</tspan><tspan x="580.0" dy="13.0">отправку, вернуть</tspan><tspan x="580.0" dy="13.0">фокус на первое</tspan><tspan x="580.0" dy="13.0">ошибочное поле</tspan></text>
+<circle cx="750" cy="665" r="18.0" fill="#fff" stroke="#222" stroke-width="4.2"/>
+<text x="750.0" y="696.0" font-size="10.5" text-anchor="middle" font-weight="normal" fill="#222"><tspan x="750.0" dy="0.0">Отправка</tspan><tspan x="750.0" dy="12.0">заблокирована</tspan></text>
+</svg>

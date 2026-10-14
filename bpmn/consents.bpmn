@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_consents" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmnlib" exporterVersion="1.0">
+  <bpmn:collaboration id="Collab_consents">
+    <bpmn:participant id="P_ui" name="UI/UX (Frontend)" processRef="Proc_P_ui"/>
+    <bpmn:participant id="P_auth" name="AuthService (Backend)" processRef="Proc_P_auth"/>
+    <bpmn:participant id="P_db" name="База данных"/>
+    <bpmn:messageFlow id="cm1" sourceRef="T_pass" targetRef="A_s" name="Согласия: тип + версия + время"/>
+    <bpmn:messageFlow id="cm2" sourceRef="A_rec" targetRef="P_db" name="Запись Consent"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_P_ui" isExecutable="false">
+    <bpmn:startEvent id="S" name="Открыта форма регистрации"><bpmn:outgoing>c01</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:task id="T_show" name="Отобразить чекбоксы и ссылки на документы"><bpmn:incoming>c01</bpmn:incoming><bpmn:outgoing>c02</bpmn:outgoing><bpmn:dataInputAssociation id="ca1"><bpmn:sourceRef>DO_docRef</bpmn:sourceRef></bpmn:dataInputAssociation></bpmn:task>
+    <bpmn:dataObjectReference id="DO_docRef" name="Документ согласия" dataObjectRef="DO_doc"/>
+    <bpmn:dataObject id="DO_doc"/>
+    <bpmn:task id="T_chk" name="Проверить, что все обязательные галочки проставлены"><bpmn:incoming>c02</bpmn:incoming><bpmn:outgoing>c03</bpmn:outgoing></bpmn:task>
+    <bpmn:exclusiveGateway id="G" name="Есть непроставленные обязательные согласия?"><bpmn:incoming>c03</bpmn:incoming><bpmn:outgoing>c04</bpmn:outgoing><bpmn:outgoing>c07</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:task id="T_lock" name="Заблокировать кнопку отправки"><bpmn:incoming>c04</bpmn:incoming><bpmn:outgoing>c05</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_hint" name="Показать подсказку «Примите условия»"><bpmn:incoming>c05</bpmn:incoming><bpmn:outgoing>c06</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="E_wait" name="Ожидание действий пользователя"><bpmn:incoming>c06</bpmn:incoming></bpmn:endEvent>
+    <bpmn:task id="T_unlock" name="Разблокировать кнопку отправки"><bpmn:incoming>c07</bpmn:incoming><bpmn:outgoing>c08</bpmn:outgoing></bpmn:task>
+    <bpmn:sendTask id="T_pass" name="Передать согласия на сервер"><bpmn:incoming>c08</bpmn:incoming></bpmn:sendTask>
+    <bpmn:sequenceFlow id="c01" sourceRef="S" targetRef="T_show"/>
+    <bpmn:sequenceFlow id="c02" sourceRef="T_show" targetRef="T_chk"/>
+    <bpmn:sequenceFlow id="c03" sourceRef="T_chk" targetRef="G"/>
+    <bpmn:sequenceFlow id="c04" sourceRef="G" targetRef="T_lock" name="да"/>
+    <bpmn:sequenceFlow id="c05" sourceRef="T_lock" targetRef="T_hint"/>
+    <bpmn:sequenceFlow id="c06" sourceRef="T_hint" targetRef="E_wait"/>
+    <bpmn:sequenceFlow id="c07" sourceRef="G" targetRef="T_unlock" name="нет"/>
+    <bpmn:sequenceFlow id="c08" sourceRef="T_unlock" targetRef="T_pass"/>
+  </bpmn:process>
+  <bpmn:process id="Proc_P_auth" isExecutable="false">
+    <bpmn:startEvent id="A_s" name="Согласия получены"><bpmn:outgoing>c20</bpmn:outgoing><bpmn:messageEventDefinition/></bpmn:startEvent>
+    <bpmn:serviceTask id="A_rec" name="Записать Consent в БД с датой и типом"><bpmn:incoming>c20</bpmn:incoming><bpmn:outgoing>c21</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="A_end" name="Согласия сохранены"><bpmn:incoming>c21</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="c20" sourceRef="A_s" targetRef="A_rec"/>
+    <bpmn:sequenceFlow id="c21" sourceRef="A_rec" targetRef="A_end"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_consents">
+    <bpmndi:BPMNPlane id="Plane_consents" bpmnElement="Collab_consents">
+      <bpmndi:BPMNShape id="P_ui_di" bpmnElement="P_ui" isHorizontal="true"><dc:Bounds x="15" y="20" width="1450" height="400"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_auth_di" bpmnElement="P_auth" isHorizontal="true"><dc:Bounds x="15" y="450" width="1450" height="160"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_db_di" bpmnElement="P_db" isHorizontal="true"><dc:Bounds x="15" y="640" width="1450" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_di" bpmnElement="S"><dc:Bounds x="112.0" y="157.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_show_di" bpmnElement="T_show"><dc:Bounds x="218.0" y="137.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_doc_di" bpmnElement="DO_docRef"><dc:Bounds x="266.0" y="57.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_chk_di" bpmnElement="T_chk"><dc:Bounds x="368.0" y="137.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G_di" bpmnElement="G" isMarkerVisible="true"><dc:Bounds x="557.0" y="152.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_lock_di" bpmnElement="T_lock"><dc:Bounds x="518.0" y="297.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_hint_di" bpmnElement="T_hint"><dc:Bounds x="668.0" y="297.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E_wait_di" bpmnElement="E_wait"><dc:Bounds x="862.0" y="317.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_unlock_di" bpmnElement="T_unlock"><dc:Bounds x="668.0" y="137.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_pass_di" bpmnElement="T_pass"><dc:Bounds x="968.0" y="137.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="A_s_di" bpmnElement="A_s"><dc:Bounds x="1012.0" y="502.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="A_rec_di" bpmnElement="A_rec"><dc:Bounds x="1118.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="A_end_di" bpmnElement="A_end"><dc:Bounds x="1312.0" y="502.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="c01_di" bpmnElement="c01">
+        <di:waypoint x="148.0" y="175.0"/>
+        <di:waypoint x="218.0" y="175.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c02_di" bpmnElement="c02">
+        <di:waypoint x="342.0" y="175.0"/>
+        <di:waypoint x="368.0" y="175.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c03_di" bpmnElement="c03">
+        <di:waypoint x="492.0" y="175.0"/>
+        <di:waypoint x="557.0" y="175.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c04_di" bpmnElement="c04">
+        <di:waypoint x="580.0" y="198.0"/>
+        <di:waypoint x="580.0" y="297.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c05_di" bpmnElement="c05">
+        <di:waypoint x="642.0" y="335.0"/>
+        <di:waypoint x="668.0" y="335.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c06_di" bpmnElement="c06">
+        <di:waypoint x="792.0" y="335.0"/>
+        <di:waypoint x="862.0" y="335.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c07_di" bpmnElement="c07">
+        <di:waypoint x="603.0" y="175.0"/>
+        <di:waypoint x="668.0" y="175.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c08_di" bpmnElement="c08">
+        <di:waypoint x="792.0" y="175.0"/>
+        <di:waypoint x="968.0" y="175.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c20_di" bpmnElement="c20">
+        <di:waypoint x="1048.0" y="520.0"/>
+        <di:waypoint x="1118.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="c21_di" bpmnElement="c21">
+        <di:waypoint x="1242.0" y="520.0"/>
+        <di:waypoint x="1312.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="cm1_di" bpmnElement="cm1">
+        <di:waypoint x="1030.0" y="213.0"/>
+        <di:waypoint x="1030.0" y="502.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="cm2_di" bpmnElement="cm2">
+        <di:waypoint x="1180.0" y="558.0"/>
+        <di:waypoint x="1180.0" y="640.0"/>
+        <di:waypoint x="1180.0" y="640.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="ca1_di" bpmnElement="ca1">
+        <di:waypoint x="280.0" y="93.0"/>
+        <di:waypoint x="280.0" y="137.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

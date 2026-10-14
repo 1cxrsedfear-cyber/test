@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_registration" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmnlib" exporterVersion="1.0">
+  <bpmn:collaboration id="Collab_registration">
+    <bpmn:participant id="P_user" name="Пользователь" processRef="Proc_P_user"/>
+    <bpmn:participant id="P_web" name="Веб-система Аэрофлот" processRef="Proc_P_web"/>
+    <bpmn:participant id="P_sms" name="SMS-шлюз" processRef="Proc_P_sms"/>
+    <bpmn:participant id="P_db" name="База данных (пользователи, коды, согласия)"/>
+    <bpmn:messageFlow id="m01" sourceRef="U_nav" targetRef="W_s" name="Запрос страницы регистрации"/>
+    <bpmn:messageFlow id="m02" sourceRef="T_focus" targetRef="U_input" name="Форма показана, автофокус"/>
+    <bpmn:messageFlow id="m03" sourceRef="U_input" targetRef="T_blur" name="Ввод и потеря фокуса (blur)"/>
+    <bpmn:messageFlow id="m04" sourceRef="T_err" targetRef="U_input" name="Подсказка под полем"/>
+    <bpmn:messageFlow id="m05" sourceRef="T_upd" targetRef="U_submit" name="Кнопка «Отправить» доступна"/>
+    <bpmn:messageFlow id="m06" sourceRef="U_submit" targetRef="T_send" name="Отправка формы"/>
+    <bpmn:messageFlow id="m07" sourceRef="U_input" targetRef="BE3" name="Отмена пользователем"/>
+    <bpmn:messageFlow id="m10" sourceRef="T_uniq" targetRef="P_db" name="Запрос: email уже есть?"/>
+    <bpmn:messageFlow id="m11" sourceRef="P_db" targetRef="T_uniq" name="Ответ: свободен / занят"/>
+    <bpmn:messageFlow id="m12" sourceRef="T_sms" targetRef="S_s" name="Запрос на отправку SMS"/>
+    <bpmn:messageFlow id="m13" sourceRef="S_end" targetRef="U_wait" name="SMS с кодом"/>
+    <bpmn:messageFlow id="m14" sourceRef="U_newcode" targetRef="T_gen" name="Запрос нового кода"/>
+    <bpmn:messageFlow id="m15" sourceRef="U_wait" targetRef="T_check" name="Введённый код"/>
+    <bpmn:messageFlow id="m16" sourceRef="T_retry" targetRef="U_wait" name="Код неверный, повторите"/>
+    <bpmn:messageFlow id="m17" sourceRef="T_save" targetRef="P_db" name="Запись пользователя и согласий"/>
+    <bpmn:messageFlow id="m18" sourceRef="P_db" targetRef="T_save" name="Подтверждение записи"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Proc_P_user" isExecutable="false">
+    <bpmn:startEvent id="U_s" name="Открыта страница регистрации (десктоп)"><bpmn:outgoing>s01</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:sendTask id="U_nav" name="Перейти на страницу регистрации"><bpmn:incoming>s01</bpmn:incoming><bpmn:outgoing>s02</bpmn:outgoing></bpmn:sendTask>
+    <bpmn:userTask id="U_input" name="Ввод данных пользователем (с Tab-навигацией)"><bpmn:incoming>s02</bpmn:incoming><bpmn:outgoing>s03</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="U_submit" name="Нажать «Отправить»"><bpmn:incoming>s03</bpmn:incoming><bpmn:outgoing>s04</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="U_wait" name="Ожидание ввода кода (код из SMS)"><bpmn:incoming>s04</bpmn:incoming><bpmn:incoming>s07</bpmn:incoming><bpmn:outgoing>s05</bpmn:outgoing></bpmn:userTask>
+    <bpmn:boundaryEvent id="BE1" name="Таймаут кода: срок действия истёк" attachedToRef="U_wait" cancelActivity="true"><bpmn:outgoing>s06</bpmn:outgoing><bpmn:timerEventDefinition><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration></bpmn:timerEventDefinition></bpmn:boundaryEvent>
+    <bpmn:userTask id="U_newcode" name="Нажать «Запросить новый код»"><bpmn:incoming>s06</bpmn:incoming><bpmn:outgoing>s07</bpmn:outgoing></bpmn:userTask>
+    <bpmn:endEvent id="U_end" name="Процесс регистрации завершён"><bpmn:incoming>s05</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="s01" sourceRef="U_s" targetRef="U_nav"/>
+    <bpmn:sequenceFlow id="s02" sourceRef="U_nav" targetRef="U_input"/>
+    <bpmn:sequenceFlow id="s03" sourceRef="U_input" targetRef="U_submit"/>
+    <bpmn:sequenceFlow id="s04" sourceRef="U_submit" targetRef="U_wait"/>
+    <bpmn:sequenceFlow id="s05" sourceRef="U_wait" targetRef="U_end"/>
+    <bpmn:sequenceFlow id="s06" sourceRef="BE1" targetRef="U_newcode"/>
+    <bpmn:sequenceFlow id="s07" sourceRef="U_newcode" targetRef="U_wait"/>
+  </bpmn:process>
+  <bpmn:process id="Proc_P_web" isExecutable="false">
+    <bpmn:laneSet>
+      <bpmn:lane id="L_ui" name="UI/UX (Frontend)">
+        <bpmn:flowNodeRef>W_s</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_open</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_focus</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_blur</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>BE3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_clean</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E_cancel</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>G1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_err</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_block</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>G2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_upd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_send</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>G3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_fmt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_dup</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_msgErr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E_err1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_retry</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_limit</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E_err2</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="L_auth" name="AuthService (Backend)">
+        <bpmn:flowNodeRef>T_uniq</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>J</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>G4</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_gen</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_sms</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>BE2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T_check</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>G5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>G6</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="L_ds" name="DataStore">
+        <bpmn:flowNodeRef>T_save</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>E_ok</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="W_s" name="Запрос страницы регистрации"><bpmn:outgoing>s10</bpmn:outgoing><bpmn:messageEventDefinition/></bpmn:startEvent>
+    <bpmn:task id="T_open" name="Открыть форму регистрации (десктоп)"><bpmn:incoming>s10</bpmn:incoming><bpmn:outgoing>s11</bpmn:outgoing><bpmn:dataInputAssociation id="a02"><bpmn:sourceRef>DO_consRef</bpmn:sourceRef></bpmn:dataInputAssociation><bpmn:dataOutputAssociation id="a01"><bpmn:targetRef>DO_formRef</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:task id="T_focus" name="Автофокус на первом поле"><bpmn:incoming>s11</bpmn:incoming><bpmn:outgoing>s12</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_blur" name="Валидация поля при потере фокуса (on blur)"><bpmn:incoming>s12</bpmn:incoming><bpmn:incoming>s18</bpmn:incoming><bpmn:outgoing>s13</bpmn:outgoing></bpmn:task>
+    <bpmn:boundaryEvent id="BE3" name="Назад / закрытие вкладки" attachedToRef="T_blur" cancelActivity="true"><bpmn:outgoing>s42</bpmn:outgoing><bpmn:messageEventDefinition/></bpmn:boundaryEvent>
+    <bpmn:task id="T_clean" name="Очистить локальные данные формы, закрыть страницу"><bpmn:incoming>s42</bpmn:incoming><bpmn:outgoing>s43</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="E_cancel" name="Регистрация отменена"><bpmn:incoming>s43</bpmn:incoming></bpmn:endEvent>
+    <bpmn:exclusiveGateway id="G1" name="Поле валидно?"><bpmn:incoming>s13</bpmn:incoming><bpmn:outgoing>s14</bpmn:outgoing><bpmn:outgoing>s16</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:task id="T_err" name="Показать сообщение об ошибке под полем"><bpmn:incoming>s14</bpmn:incoming><bpmn:outgoing>s15</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_block" name="Блокировать кнопку «Отправить» при ошибках"><bpmn:incoming>s15</bpmn:incoming><bpmn:incoming>s17</bpmn:incoming><bpmn:incoming>s28</bpmn:incoming><bpmn:outgoing>s18</bpmn:outgoing></bpmn:task>
+    <bpmn:exclusiveGateway id="G2" name="Все поля валидны?"><bpmn:incoming>s16</bpmn:incoming><bpmn:outgoing>s17</bpmn:outgoing><bpmn:outgoing>s19</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:task id="T_upd" name="Разблокировать кнопку «Отправить»"><bpmn:incoming>s19</bpmn:incoming><bpmn:outgoing>s20</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_send" name="Отправить форму на проверку"><bpmn:incoming>s20</bpmn:incoming><bpmn:outgoing>s21</bpmn:outgoing><bpmn:dataOutputAssociation id="a03"><bpmn:targetRef>DO_userRef</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:task>
+    <bpmn:parallelGateway id="G3"><bpmn:incoming>s21</bpmn:incoming><bpmn:outgoing>s22</bpmn:outgoing><bpmn:outgoing>s23</bpmn:outgoing></bpmn:parallelGateway>
+    <bpmn:task id="T_fmt" name="Проверить формат email"><bpmn:incoming>s22</bpmn:incoming><bpmn:outgoing>s24</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_dup" name="Показать под полем: email уже занят (HTTP 409)"><bpmn:incoming>s27</bpmn:incoming><bpmn:outgoing>s28</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_msgErr" name="Показать понятное сообщение, предложить повторить позже"><bpmn:incoming>s32</bpmn:incoming><bpmn:outgoing>s33</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="E_err1" name="Финальное сообщение об ошибке (шлюз недоступен)"><bpmn:incoming>s33</bpmn:incoming><bpmn:errorEventDefinition/></bpmn:endEvent>
+    <bpmn:task id="T_retry" name="Сообщить о неверном коде (повторный ввод)"><bpmn:incoming>s37</bpmn:incoming><bpmn:outgoing>s38</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="T_limit" name="Показать финальное сообщение об ошибке"><bpmn:incoming>s39</bpmn:incoming><bpmn:outgoing>s40</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="E_err2" name="Финальное сообщение об ошибке (лимит попыток)"><bpmn:incoming>s40</bpmn:incoming><bpmn:errorEventDefinition/></bpmn:endEvent>
+    <bpmn:dataObjectReference id="DO_formRef" name="Форма регистрации (десктоп)" dataObjectRef="DO_form"/>
+    <bpmn:dataObject id="DO_form"/>
+    <bpmn:dataObjectReference id="DO_consRef" name="Документ согласия" dataObjectRef="DO_cons"/>
+    <bpmn:dataObject id="DO_cons"/>
+    <bpmn:dataObjectReference id="DO_userRef" name="Объект пользователя" dataObjectRef="DO_user"/>
+    <bpmn:dataObject id="DO_user"/>
+    <bpmn:serviceTask id="T_uniq" name="Проверить уникальность email на бэкенде"><bpmn:incoming>s23</bpmn:incoming><bpmn:outgoing>s25</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:parallelGateway id="J"><bpmn:incoming>s24</bpmn:incoming><bpmn:incoming>s25</bpmn:incoming><bpmn:outgoing>s26</bpmn:outgoing></bpmn:parallelGateway>
+    <bpmn:exclusiveGateway id="G4" name="Email уникален?"><bpmn:incoming>s26</bpmn:incoming><bpmn:outgoing>s27</bpmn:outgoing><bpmn:outgoing>s29</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="T_gen" name="Сгенерировать код подтверждения"><bpmn:incoming>s29</bpmn:incoming><bpmn:outgoing>s30</bpmn:outgoing><bpmn:dataOutputAssociation id="a04"><bpmn:targetRef>DO_codeRef</bpmn:targetRef></bpmn:dataOutputAssociation></bpmn:serviceTask>
+    <bpmn:dataObjectReference id="DO_codeRef" name="Код подтверждения" dataObjectRef="DO_code"/>
+    <bpmn:dataObject id="DO_code"/>
+    <bpmn:sendTask id="T_sms" name="Отправить SMS через шлюз"><bpmn:incoming>s30</bpmn:incoming><bpmn:outgoing>s31</bpmn:outgoing></bpmn:sendTask>
+    <bpmn:boundaryEvent id="BE2" name="SMS-шлюз недоступен" attachedToRef="T_sms" cancelActivity="true"><bpmn:outgoing>s32</bpmn:outgoing><bpmn:errorEventDefinition/></bpmn:boundaryEvent>
+    <bpmn:serviceTask id="T_check" name="Проверить код подтверждения"><bpmn:incoming>s31</bpmn:incoming><bpmn:incoming>s38</bpmn:incoming><bpmn:outgoing>s34</bpmn:outgoing><bpmn:dataInputAssociation id="a05"><bpmn:sourceRef>DO_codeRef</bpmn:sourceRef></bpmn:dataInputAssociation></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="G5" name="Код подтверждения верный?"><bpmn:incoming>s34</bpmn:incoming><bpmn:outgoing>s35</bpmn:outgoing><bpmn:outgoing>s36</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="G6" name="Лимит попыток исчерпан?"><bpmn:incoming>s36</bpmn:incoming><bpmn:outgoing>s37</bpmn:outgoing><bpmn:outgoing>s39</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="T_save" name="Сохранить пользователя в БД"><bpmn:incoming>s35</bpmn:incoming><bpmn:outgoing>s41</bpmn:outgoing><bpmn:dataInputAssociation id="a06"><bpmn:sourceRef>DO_u2Ref</bpmn:sourceRef></bpmn:dataInputAssociation><bpmn:dataInputAssociation id="a07"><bpmn:sourceRef>DO_c2Ref</bpmn:sourceRef></bpmn:dataInputAssociation></bpmn:serviceTask>
+    <bpmn:endEvent id="E_ok" name="Успешный вход в ЛК"><bpmn:incoming>s41</bpmn:incoming></bpmn:endEvent>
+    <bpmn:dataObjectReference id="DO_u2Ref" name="Объект пользователя" dataObjectRef="DO_u2"/>
+    <bpmn:dataObject id="DO_u2"/>
+    <bpmn:dataObjectReference id="DO_c2Ref" name="Документ согласия" dataObjectRef="DO_c2"/>
+    <bpmn:dataObject id="DO_c2"/>
+    <bpmn:sequenceFlow id="s10" sourceRef="W_s" targetRef="T_open"/>
+    <bpmn:sequenceFlow id="s11" sourceRef="T_open" targetRef="T_focus"/>
+    <bpmn:sequenceFlow id="s12" sourceRef="T_focus" targetRef="T_blur"/>
+    <bpmn:sequenceFlow id="s13" sourceRef="T_blur" targetRef="G1"/>
+    <bpmn:sequenceFlow id="s14" sourceRef="G1" targetRef="T_err" name="нет"/>
+    <bpmn:sequenceFlow id="s15" sourceRef="T_err" targetRef="T_block"/>
+    <bpmn:sequenceFlow id="s16" sourceRef="G1" targetRef="G2" name="да"/>
+    <bpmn:sequenceFlow id="s17" sourceRef="G2" targetRef="T_block" name="нет"/>
+    <bpmn:sequenceFlow id="s18" sourceRef="T_block" targetRef="T_blur"/>
+    <bpmn:sequenceFlow id="s19" sourceRef="G2" targetRef="T_upd" name="да"/>
+    <bpmn:sequenceFlow id="s20" sourceRef="T_upd" targetRef="T_send"/>
+    <bpmn:sequenceFlow id="s21" sourceRef="T_send" targetRef="G3"/>
+    <bpmn:sequenceFlow id="s22" sourceRef="G3" targetRef="T_fmt"/>
+    <bpmn:sequenceFlow id="s23" sourceRef="G3" targetRef="T_uniq"/>
+    <bpmn:sequenceFlow id="s24" sourceRef="T_fmt" targetRef="J"/>
+    <bpmn:sequenceFlow id="s25" sourceRef="T_uniq" targetRef="J"/>
+    <bpmn:sequenceFlow id="s26" sourceRef="J" targetRef="G4"/>
+    <bpmn:sequenceFlow id="s27" sourceRef="G4" targetRef="T_dup" name="нет"/>
+    <bpmn:sequenceFlow id="s28" sourceRef="T_dup" targetRef="T_block"/>
+    <bpmn:sequenceFlow id="s29" sourceRef="G4" targetRef="T_gen" name="да"/>
+    <bpmn:sequenceFlow id="s30" sourceRef="T_gen" targetRef="T_sms"/>
+    <bpmn:sequenceFlow id="s31" sourceRef="T_sms" targetRef="T_check"/>
+    <bpmn:sequenceFlow id="s32" sourceRef="BE2" targetRef="T_msgErr"/>
+    <bpmn:sequenceFlow id="s33" sourceRef="T_msgErr" targetRef="E_err1"/>
+    <bpmn:sequenceFlow id="s34" sourceRef="T_check" targetRef="G5"/>
+    <bpmn:sequenceFlow id="s35" sourceRef="G5" targetRef="T_save" name="да"/>
+    <bpmn:sequenceFlow id="s36" sourceRef="G5" targetRef="G6" name="нет"/>
+    <bpmn:sequenceFlow id="s37" sourceRef="G6" targetRef="T_retry" name="нет"/>
+    <bpmn:sequenceFlow id="s38" sourceRef="T_retry" targetRef="T_check"/>
+    <bpmn:sequenceFlow id="s39" sourceRef="G6" targetRef="T_limit" name="да"/>
+    <bpmn:sequenceFlow id="s40" sourceRef="T_limit" targetRef="E_err2"/>
+    <bpmn:sequenceFlow id="s41" sourceRef="T_save" targetRef="E_ok"/>
+    <bpmn:sequenceFlow id="s42" sourceRef="BE3" targetRef="T_clean"/>
+    <bpmn:sequenceFlow id="s43" sourceRef="T_clean" targetRef="E_cancel"/>
+  </bpmn:process>
+  <bpmn:process id="Proc_P_sms" isExecutable="false">
+    <bpmn:startEvent id="S_s" name="Запрос на отправку SMS"><bpmn:outgoing>s50</bpmn:outgoing><bpmn:messageEventDefinition/></bpmn:startEvent>
+    <bpmn:sendTask id="S_task" name="Доставить SMS на номер пользователя"><bpmn:incoming>s50</bpmn:incoming><bpmn:outgoing>s51</bpmn:outgoing></bpmn:sendTask>
+    <bpmn:endEvent id="S_end" name="SMS с кодом отправлен"><bpmn:incoming>s51</bpmn:incoming><bpmn:messageEventDefinition/></bpmn:endEvent>
+    <bpmn:sequenceFlow id="s50" sourceRef="S_s" targetRef="S_task"/>
+    <bpmn:sequenceFlow id="s51" sourceRef="S_task" targetRef="S_end"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_registration">
+    <bpmndi:BPMNPlane id="Plane_registration" bpmnElement="Collab_registration">
+      <bpmndi:BPMNShape id="P_user_di" bpmnElement="P_user" isHorizontal="true"><dc:Bounds x="15" y="20" width="2840" height="230"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_web_di" bpmnElement="P_web" isHorizontal="true"><dc:Bounds x="15" y="290" width="2840" height="810"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_ui_di" bpmnElement="L_ui" isHorizontal="true"><dc:Bounds x="45" y="290" width="2810" height="440"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_auth_di" bpmnElement="L_auth" isHorizontal="true"><dc:Bounds x="45" y="730" width="2810" height="230"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="L_ds_di" bpmnElement="L_ds" isHorizontal="true"><dc:Bounds x="45" y="960" width="2810" height="140"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_sms_di" bpmnElement="P_sms" isHorizontal="true"><dc:Bounds x="15" y="1140" width="2840" height="140"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="P_db_di" bpmnElement="P_db" isHorizontal="true"><dc:Bounds x="15" y="1320" width="2840" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_s_di" bpmnElement="U_s"><dc:Bounds x="107.0" y="77.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_nav_di" bpmnElement="U_nav"><dc:Bounds x="203.0" y="57.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_input_di" bpmnElement="U_input"><dc:Bounds x="623.0" y="57.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_submit_di" bpmnElement="U_submit"><dc:Bounds x="1043.0" y="57.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_wait_di" bpmnElement="U_wait"><dc:Bounds x="2163.0" y="57.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BE1_di" bpmnElement="BE1"><dc:Bounds x="2180.0" y="118.0" width="30" height="30"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_newcode_di" bpmnElement="U_newcode"><dc:Bounds x="1883.0" y="152.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="U_end_di" bpmnElement="U_end"><dc:Bounds x="2347.0" y="77.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="W_s_di" bpmnElement="W_s"><dc:Bounds x="247.0" y="502.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_open_di" bpmnElement="T_open"><dc:Bounds x="343.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_focus_di" bpmnElement="T_focus"><dc:Bounds x="483.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_blur_di" bpmnElement="T_blur"><dc:Bounds x="623.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BE3_di" bpmnElement="BE3"><dc:Bounds x="635.0" y="543.0" width="30" height="30"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_clean_di" bpmnElement="T_clean"><dc:Bounds x="588.0" y="622.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E_cancel_di" bpmnElement="E_cancel"><dc:Bounds x="832.0" y="642.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G1_di" bpmnElement="G1" isMarkerVisible="true"><dc:Bounds x="802.0" y="497.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_err_di" bpmnElement="T_err"><dc:Bounds x="763.0" y="342.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_block_di" bpmnElement="T_block"><dc:Bounds x="903.0" y="342.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G2_di" bpmnElement="G2" isMarkerVisible="true"><dc:Bounds x="942.0" y="497.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_upd_di" bpmnElement="T_upd"><dc:Bounds x="1043.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_send_di" bpmnElement="T_send"><dc:Bounds x="1183.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G3_di" bpmnElement="G3"><dc:Bounds x="1362.0" y="497.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_fmt_di" bpmnElement="T_fmt"><dc:Bounds x="1463.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_dup_di" bpmnElement="T_dup"><dc:Bounds x="1743.0" y="342.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_msgErr_di" bpmnElement="T_msgErr"><dc:Bounds x="2023.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E_err1_di" bpmnElement="E_err1"><dc:Bounds x="2067.0" y="362.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_retry_di" bpmnElement="T_retry"><dc:Bounds x="2443.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_limit_di" bpmnElement="T_limit"><dc:Bounds x="2583.0" y="482.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E_err2_di" bpmnElement="E_err2"><dc:Bounds x="2627.0" y="362.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_form_di" bpmnElement="DO_formRef"><dc:Bounds x="349.0" y="362.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_cons_di" bpmnElement="DO_consRef"><dc:Bounds x="433.0" y="362.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_user_di" bpmnElement="DO_userRef"><dc:Bounds x="1366.0" y="310.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_uniq_di" bpmnElement="T_uniq"><dc:Bounds x="1463.0" y="787.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="J_di" bpmnElement="J"><dc:Bounds x="1642.0" y="802.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G4_di" bpmnElement="G4" isMarkerVisible="true"><dc:Bounds x="1782.0" y="802.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_gen_di" bpmnElement="T_gen"><dc:Bounds x="1883.0" y="787.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_code_di" bpmnElement="DO_codeRef"><dc:Bounds x="1931.0" y="885.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_sms_di" bpmnElement="T_sms"><dc:Bounds x="2023.0" y="787.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BE2_di" bpmnElement="BE2"><dc:Bounds x="2070.0" y="772.0" width="30" height="30"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_check_di" bpmnElement="T_check"><dc:Bounds x="2163.0" y="787.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G5_di" bpmnElement="G5" isMarkerVisible="true"><dc:Bounds x="2342.0" y="802.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G6_di" bpmnElement="G6" isMarkerVisible="true"><dc:Bounds x="2482.0" y="802.0" width="46" height="46"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T_save_di" bpmnElement="T_save"><dc:Bounds x="2303.0" y="992.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E_ok_di" bpmnElement="E_ok"><dc:Bounds x="2487.0" y="1012.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_u2_di" bpmnElement="DO_u2Ref"><dc:Bounds x="2231.0" y="1012.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DO_c2_di" bpmnElement="DO_c2Ref"><dc:Bounds x="2156.0" y="1012.0" width="28" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_s_di" bpmnElement="S_s"><dc:Bounds x="2067.0" y="1192.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_task_di" bpmnElement="S_task"><dc:Bounds x="2163.0" y="1172.0" width="124" height="76"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_end_di" bpmnElement="S_end"><dc:Bounds x="2407.0" y="1192.0" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s01_di" bpmnElement="s01">
+        <di:waypoint x="143.0" y="95.0"/>
+        <di:waypoint x="203.0" y="95.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s02_di" bpmnElement="s02">
+        <di:waypoint x="327.0" y="95.0"/>
+        <di:waypoint x="623.0" y="95.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s03_di" bpmnElement="s03">
+        <di:waypoint x="747.0" y="95.0"/>
+        <di:waypoint x="1043.0" y="95.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s04_di" bpmnElement="s04">
+        <di:waypoint x="1167.0" y="95.0"/>
+        <di:waypoint x="2163.0" y="95.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s05_di" bpmnElement="s05">
+        <di:waypoint x="2287.0" y="95.0"/>
+        <di:waypoint x="2347.0" y="95.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s06_di" bpmnElement="s06">
+        <di:waypoint x="2195.0" y="148.0"/>
+        <di:waypoint x="2195.0" y="205.0"/>
+        <di:waypoint x="2007.0" y="205.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s07_di" bpmnElement="s07">
+        <di:waypoint x="2007.0" y="175.0"/>
+        <di:waypoint x="2085.0" y="175.0"/>
+        <di:waypoint x="2085.0" y="95.0"/>
+        <di:waypoint x="2163.0" y="95.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s10_di" bpmnElement="s10">
+        <di:waypoint x="283.0" y="520.0"/>
+        <di:waypoint x="343.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s11_di" bpmnElement="s11">
+        <di:waypoint x="467.0" y="520.0"/>
+        <di:waypoint x="483.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s12_di" bpmnElement="s12">
+        <di:waypoint x="607.0" y="520.0"/>
+        <di:waypoint x="623.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s13_di" bpmnElement="s13">
+        <di:waypoint x="747.0" y="520.0"/>
+        <di:waypoint x="802.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s14_di" bpmnElement="s14">
+        <di:waypoint x="825.0" y="497.0"/>
+        <di:waypoint x="825.0" y="418.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s15_di" bpmnElement="s15">
+        <di:waypoint x="887.0" y="380.0"/>
+        <di:waypoint x="903.0" y="380.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s16_di" bpmnElement="s16">
+        <di:waypoint x="848.0" y="520.0"/>
+        <di:waypoint x="942.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s17_di" bpmnElement="s17">
+        <di:waypoint x="965.0" y="497.0"/>
+        <di:waypoint x="965.0" y="418.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s18_di" bpmnElement="s18">
+        <di:waypoint x="965.0" y="342.0"/>
+        <di:waypoint x="965.0" y="322.0"/>
+        <di:waypoint x="665.0" y="322.0"/>
+        <di:waypoint x="665.0" y="482.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s19_di" bpmnElement="s19">
+        <di:waypoint x="988.0" y="520.0"/>
+        <di:waypoint x="1043.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s20_di" bpmnElement="s20">
+        <di:waypoint x="1167.0" y="520.0"/>
+        <di:waypoint x="1183.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s21_di" bpmnElement="s21">
+        <di:waypoint x="1307.0" y="520.0"/>
+        <di:waypoint x="1362.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s22_di" bpmnElement="s22">
+        <di:waypoint x="1408.0" y="520.0"/>
+        <di:waypoint x="1463.0" y="520.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s23_di" bpmnElement="s23">
+        <di:waypoint x="1385.0" y="543.0"/>
+        <di:waypoint x="1385.0" y="825.0"/>
+        <di:waypoint x="1463.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s24_di" bpmnElement="s24">
+        <di:waypoint x="1587.0" y="520.0"/>
+        <di:waypoint x="1665.0" y="520.0"/>
+        <di:waypoint x="1665.0" y="802.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s25_di" bpmnElement="s25">
+        <di:waypoint x="1587.0" y="825.0"/>
+        <di:waypoint x="1642.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s26_di" bpmnElement="s26">
+        <di:waypoint x="1688.0" y="825.0"/>
+        <di:waypoint x="1782.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s27_di" bpmnElement="s27">
+        <di:waypoint x="1805.0" y="802.0"/>
+        <di:waypoint x="1805.0" y="418.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s28_di" bpmnElement="s28">
+        <di:waypoint x="1743.0" y="380.0"/>
+        <di:waypoint x="1027.0" y="380.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s29_di" bpmnElement="s29">
+        <di:waypoint x="1828.0" y="825.0"/>
+        <di:waypoint x="1883.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s30_di" bpmnElement="s30">
+        <di:waypoint x="2007.0" y="825.0"/>
+        <di:waypoint x="2023.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s31_di" bpmnElement="s31">
+        <di:waypoint x="2147.0" y="825.0"/>
+        <di:waypoint x="2163.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s32_di" bpmnElement="s32">
+        <di:waypoint x="2085.0" y="772.0"/>
+        <di:waypoint x="2085.0" y="558.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s33_di" bpmnElement="s33">
+        <di:waypoint x="2085.0" y="482.0"/>
+        <di:waypoint x="2085.0" y="398.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s34_di" bpmnElement="s34">
+        <di:waypoint x="2287.0" y="825.0"/>
+        <di:waypoint x="2342.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s35_di" bpmnElement="s35">
+        <di:waypoint x="2365.0" y="848.0"/>
+        <di:waypoint x="2365.0" y="992.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s36_di" bpmnElement="s36">
+        <di:waypoint x="2388.0" y="825.0"/>
+        <di:waypoint x="2482.0" y="825.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s37_di" bpmnElement="s37">
+        <di:waypoint x="2505.0" y="802.0"/>
+        <di:waypoint x="2505.0" y="558.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s38_di" bpmnElement="s38">
+        <di:waypoint x="2443.0" y="520.0"/>
+        <di:waypoint x="2255.0" y="520.0"/>
+        <di:waypoint x="2255.0" y="787.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s39_di" bpmnElement="s39">
+        <di:waypoint x="2528.0" y="825.0"/>
+        <di:waypoint x="2645.0" y="825.0"/>
+        <di:waypoint x="2645.0" y="558.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s40_di" bpmnElement="s40">
+        <di:waypoint x="2645.0" y="482.0"/>
+        <di:waypoint x="2645.0" y="398.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s41_di" bpmnElement="s41">
+        <di:waypoint x="2427.0" y="1030.0"/>
+        <di:waypoint x="2487.0" y="1030.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s42_di" bpmnElement="s42">
+        <di:waypoint x="650.0" y="573.0"/>
+        <di:waypoint x="650.0" y="622.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s43_di" bpmnElement="s43">
+        <di:waypoint x="712.0" y="660.0"/>
+        <di:waypoint x="832.0" y="660.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s50_di" bpmnElement="s50">
+        <di:waypoint x="2103.0" y="1210.0"/>
+        <di:waypoint x="2163.0" y="1210.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s51_di" bpmnElement="s51">
+        <di:waypoint x="2287.0" y="1210.0"/>
+        <di:waypoint x="2407.0" y="1210.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m01_di" bpmnElement="m01">
+        <di:waypoint x="265.0" y="133.0"/>
+        <di:waypoint x="265.0" y="502.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m02_di" bpmnElement="m02">
+        <di:waypoint x="575.0" y="482.0"/>
+        <di:waypoint x="575.0" y="268.0"/>
+        <di:waypoint x="660.0" y="268.0"/>
+        <di:waypoint x="660.0" y="133.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m03_di" bpmnElement="m03">
+        <di:waypoint x="720.0" y="133.0"/>
+        <di:waypoint x="720.0" y="482.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m04_di" bpmnElement="m04">
+        <di:waypoint x="825.0" y="342.0"/>
+        <di:waypoint x="825.0" y="268.0"/>
+        <di:waypoint x="690.0" y="268.0"/>
+        <di:waypoint x="690.0" y="133.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m05_di" bpmnElement="m05">
+        <di:waypoint x="1105.0" y="482.0"/>
+        <di:waypoint x="1105.0" y="133.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m06_di" bpmnElement="m06">
+        <di:waypoint x="1130.0" y="133.0"/>
+        <di:waypoint x="1130.0" y="268.0"/>
+        <di:waypoint x="1245.0" y="268.0"/>
+        <di:waypoint x="1245.0" y="482.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m07_di" bpmnElement="m07">
+        <di:waypoint x="630.0" y="133.0"/>
+        <di:waypoint x="630.0" y="200.0"/>
+        <di:waypoint x="615.0" y="200.0"/>
+        <di:waypoint x="615.0" y="558.0"/>
+        <di:waypoint x="635.0" y="558.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m10_di" bpmnElement="m10">
+        <di:waypoint x="1505.0" y="863.0"/>
+        <di:waypoint x="1505.0" y="1320.0"/>
+        <di:waypoint x="1505.0" y="1320.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m11_di" bpmnElement="m11">
+        <di:waypoint x="1545.0" y="1320.0"/>
+        <di:waypoint x="1545.0" y="863.0"/>
+        <di:waypoint x="1545.0" y="863.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m12_di" bpmnElement="m12">
+        <di:waypoint x="2085.0" y="863.0"/>
+        <di:waypoint x="2085.0" y="1192.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m13_di" bpmnElement="m13">
+        <di:waypoint x="2443.0" y="1210.0"/>
+        <di:waypoint x="2785.0" y="1210.0"/>
+        <di:waypoint x="2785.0" y="38.0"/>
+        <di:waypoint x="2250.0" y="38.0"/>
+        <di:waypoint x="2250.0" y="57.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m14_di" bpmnElement="m14">
+        <di:waypoint x="1945.0" y="228.0"/>
+        <di:waypoint x="1945.0" y="787.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m15_di" bpmnElement="m15">
+        <di:waypoint x="2230.0" y="133.0"/>
+        <di:waypoint x="2230.0" y="787.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m16_di" bpmnElement="m16">
+        <di:waypoint x="2505.0" y="482.0"/>
+        <di:waypoint x="2505.0" y="268.0"/>
+        <di:waypoint x="2265.0" y="268.0"/>
+        <di:waypoint x="2265.0" y="133.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m17_di" bpmnElement="m17">
+        <di:waypoint x="2345.0" y="1068.0"/>
+        <di:waypoint x="2345.0" y="1320.0"/>
+        <di:waypoint x="2345.0" y="1320.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="m18_di" bpmnElement="m18">
+        <di:waypoint x="2375.0" y="1320.0"/>
+        <di:waypoint x="2375.0" y="1068.0"/>
+        <di:waypoint x="2375.0" y="1068.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a01_di" bpmnElement="a01">
+        <di:waypoint x="363.0" y="482.0"/>
+        <di:waypoint x="363.0" y="398.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a02_di" bpmnElement="a02">
+        <di:waypoint x="447.0" y="398.0"/>
+        <di:waypoint x="447.0" y="482.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a03_di" bpmnElement="a03">
+        <di:waypoint x="1293.0" y="482.0"/>
+        <di:waypoint x="1293.0" y="414.0"/>
+        <di:waypoint x="1380.0" y="414.0"/>
+        <di:waypoint x="1380.0" y="346.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a04_di" bpmnElement="a04">
+        <di:waypoint x="1945.0" y="863.0"/>
+        <di:waypoint x="1945.0" y="885.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a05_di" bpmnElement="a05">
+        <di:waypoint x="1959.0" y="903.0"/>
+        <di:waypoint x="2225.0" y="903.0"/>
+        <di:waypoint x="2225.0" y="863.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a06_di" bpmnElement="a06">
+        <di:waypoint x="2259.0" y="1030.0"/>
+        <di:waypoint x="2303.0" y="1030.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="a07_di" bpmnElement="a07">
+        <di:waypoint x="2170.0" y="1012.0"/>
+        <di:waypoint x="2170.0" y="974.0"/>
+        <di:waypoint x="2345.0" y="974.0"/>
+        <di:waypoint x="2345.0" y="992.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
