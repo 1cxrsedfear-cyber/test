@@ -48,3 +48,22 @@ Button / Primary (text property `Label`) · Brand / Logo.
 ## Images
 News 1–5, the home hero and the referral gift are AI-generated raster image fills (soft-masked rectangles).
 Logo, icons and flags are vectors. The logo mark has an SVG export preset.
+
+## App flow v2 (second reference — 8 screens)
+Frames `Screen v2 / …` (390 × 867 px, reference scaled ×1.5), placed below the first set (y ≈ 2200):
+
+| Screen | Node id |
+| --- | --- |
+| Splash | 45:314 |
+| Home | 45:317 |
+| Servers | 45:320 |
+| Connected | 45:323 |
+| Subscription | 45:326 |
+| Profile | 45:329 |
+| Referral | 45:332 |
+| Settings | 45:335 |
+
+Components: `Brand / Logo mark v2` (vector, SVG export), `App Header v2`, `Bottom Nav v2` (variant `Active` = Home | Servers | Subscription | Profile).
+Extra colour variables: v2/bg-deep #000E26, v2/bg-nav #000B1D, v2/card-glass #06183F, v2/azure #0A84FF, v2/azure-light #38A8FF, v2/text-dim #8EA2C6.
+Only the referral gift is a raster (AI-generated, soft-masked); logo, icons, flags, power ring and glass cards are vectors.
+Screenshots: `figma-overview-full.png` (whole page), `figma-overview-v2.png` (v2 section).
