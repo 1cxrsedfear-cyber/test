@@ -92,3 +92,19 @@ Screenshot: `figma-overview-v3.png`.
 `HUD / Background` is neutral graphite (#262626 → #171718) with topographic contour lines generated from a height field (marching squares),
 faint circuit traces and corner marks. Panels are graphite frosted glass, phone frames metallic gray. Decorative ghost icons only appear on
 Splash (rings) and Settings (gear) where there is free space.
+
+## Style v4 — gray HUD restyle of the first 5-screen set (in progress)
+Frames `Screen v4 / …` / `Mockup v4 / …` (390 × 867), y ≈ 7900 on the Figma page. Gray graphite background (`HUD / Background`),
+frosted panels, `// <tag>` labels, JetBrains Mono, silver buttons, minimal nav `HUD Bottom Nav 5`
+(variant `Active` = Home | Tariffs | Referral | News | Support).
+
+| Screen | Status |
+| --- | --- |
+| Home | done |
+| Tariffs | done |
+| Referral | done; TODO: button icon should be "copy" (currently power), move caption `// больше друзей…` ~6 px up from the button |
+| Support | TODO: search, FAQ list (6 rows), operator panel (green dashed), Telegram + Instructions rows |
+| News | TODO: filter chips (Все / Обновления / Акции), 5 news cards (78×78 image, title, 2-line text, date) |
+
+Icon components `HUD Icon / <name>` (power, arrow, copy, logout, crown, globe, gear) sit in `HUD Components`; the button has `Icon` (swap) and `Show icon` properties.
+Figma file used last: `hP0t2XArWCBEJn2gB2vusf` (copy). The Figma connector must be authorised in a new session before editing.
