@@ -23,19 +23,19 @@ this page inside the file.
 ## Colour variables (collection `Connect VPN / Colors`)
 | Variable | Value |
 | --- | --- |
-| bg/navy-950 | #020F2A |
+| bg/navy-950 | #010F29 |
 | bg/navy-900 | #041535 |
-| card/fill | #07204A |
+| card/fill | #01193F |
 | card/border | #14407F |
 | text/primary | #FFFFFF |
-| text/secondary | #9DB4DA |
+| text/secondary | #8CA8D6 |
 | text/muted | #6F8BB8 |
 | accent/cyan | #1FD1FF |
 | accent/blue | #0A8BFF |
 | accent/blue-dark | #0A5FD6 |
 | accent/green | #22D6A3 |
 
-Gradients: primary button `#05B4FF → #0A74F6` (horizontal); card `#0B2B5E → #061A41` (vertical), border `#174684`.
+Gradients: primary button `#05B4FF → #0A74F6` (horizontal); card `#02204C → #01173F` (vertical), border `#16508F` at 55%.
 
 ## Shape and spacing
 Screen padding 32 px · card radius 16 px · pills and buttons are fully rounded · list row ≈ 52 px · tab bar 91 px ·
