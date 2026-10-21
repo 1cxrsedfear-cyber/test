@@ -67,3 +67,23 @@ Components: `Brand / Logo mark v2` (vector, SVG export), `App Header v2`, `Botto
 Extra colour variables: v2/bg-deep #000E26, v2/bg-nav #000B1D, v2/card-glass #06183F, v2/azure #0A84FF, v2/azure-light #38A8FF, v2/text-dim #8EA2C6.
 Only the referral gift is a raster (AI-generated, soft-masked); logo, icons, flags, power ring and glass cards are vectors.
 Screenshots: `figma-overview-full.png` (whole page), `figma-overview-v2.png` (v2 section).
+
+## Style v3 — HUD / terminal (third reference)
+Frames `Screen v3 / …` and `Mockup v3 / …` (390 × 867), y ≈ 4500 — the same 8 screens and tabs as v2, restyled:
+gradient background with vector contour lines and circuit traces, dashed colour-coded panels, `// <tag>` labels, JetBrains Mono.
+
+| Screen | Node id |
+| --- | --- |
+| Splash | 74:1052 |
+| Home | 74:1598 |
+| Servers | 74:2144 |
+| Connected | 74:2690 |
+| Subscription | 74:3236 |
+| Profile | 74:3782 |
+| Referral | 74:4328 |
+| Settings | 74:4874 |
+
+Components (frame `HUD Components`): HUD / Background (instance on every screen — edit once to restyle all), HUD Panel (Style = Solid | Green | Red | Blue, dashed variants),
+HUD / Tag, HUD / Chip, HUD / Badge, HUD / Button Primary, HUD / Button Dashed, HUD / Header, HUD Bottom Nav (Active = Home | Servers | Subscription | Profile).
+Tokens: collection `Connect VPN HUD / Colors` (hud/bg-0 #050E24, bg-1 #0B1A4D, panel #1F232D, panel-border #343B4C, tag-accent #7C9BFF, tag #5A6378, text #E6EAF5, text-dim #8E97AD, green #8BC57F, red #F07E6E, violet #B993FF, orange #F0A06A).
+Screenshot: `figma-overview-v3.png`.
