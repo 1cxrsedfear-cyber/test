@@ -87,3 +87,8 @@ Components (frame `HUD Components`): HUD / Background (instance on every screen 
 HUD / Tag, HUD / Chip, HUD / Badge, HUD / Button Primary, HUD / Button Dashed, HUD / Header, HUD Bottom Nav (Active = Home | Servers | Subscription | Profile).
 Tokens: collection `Connect VPN HUD / Colors` (hud/bg-0 #050E24, bg-1 #0B1A4D, panel #1F232D, panel-border #343B4C, tag-accent #7C9BFF, tag #5A6378, text #E6EAF5, text-dim #8E97AD, green #8BC57F, red #F07E6E, violet #B993FF, orange #F0A06A).
 Screenshot: `figma-overview-v3.png`.
+
+### v3 background update (gray)
+`HUD / Background` is neutral graphite (#262626 → #171718) with topographic contour lines generated from a height field (marching squares),
+faint circuit traces and corner marks. Panels are graphite frosted glass, phone frames metallic gray. Decorative ghost icons only appear on
+Splash (rings) and Settings (gear) where there is free space.
